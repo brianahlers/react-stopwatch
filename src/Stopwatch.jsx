@@ -12,22 +12,21 @@ function Stopwatch() {
             intervalIDRef.current = setInterval(() => {
                 setElapsedTime(Date.now() - startTimeRef.current);
             }, 10)
-        } 
-        
+        }
+
         return () => {
             clearInterval(intervalIDRef.current);
         };
     }, [isRunning]);
 
-    function start() {
-        setIsRunning(true);
-        startTimeRef.current = Date.now() - elapsedTime;
-        console.log(startTimeRef.current);
-    };
-
-    function stop() {
-        setIsRunning(false);
-    };
+    function toggleClock() {
+        if (isRunning) {
+            setIsRunning(false);
+        } else {
+            setIsRunning(true);
+            startTimeRef.current = Date.now() - elapsedTime;
+        }
+    }
 
     function reset() {
         setElapsedTime(0);
@@ -49,8 +48,9 @@ function Stopwatch() {
             <div className="stopwatch">
                 <div className="display">{formatTime()}</div>
                 <div className="controls">
-                    <button onClick={start} className="start-button">Start</button>
-                    <button onClick={stop} className="stop-button">Stop</button>
+                    <button onClick={toggleClock} className="toggle-button">
+                        {isRunning ? 'Stop' : 'Start'}
+                    </button>
                     <button onClick={reset} className="reset-button">Reset</button>
                 </div>
             </div>
