@@ -1,29 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 
-function Stopwatch(){
+function Stopwatch() {
 
     const [isRunning, setIsRunning] = useState(false);
     const [elapsedTime, setElapsedTime] = useState(0);
     const intervalIDRef = useRef(null);
     const startTimeRef = useRef(0);
-    
+
     useEffect(() => {
 
-        if(isRunning){
+        if (isRunning) {
             intervalIDRef.current = setInterval(() => {
                 setElapsedTime(Date.now() - startTimeRef.current);
             }, 10)
         }
 
         return () => {
-                
-                clearInterval(intervalIDRef.current);
+
+            clearInterval(intervalIDRef.current);
         }
 
     }, [isRunning]);
 
-    function start(){
+    function start() {
 
         setIsRunning(true);
         startTimeRef.current = Date.now() - elapsedTime;
@@ -31,13 +31,13 @@ function Stopwatch(){
 
     };
 
-    function stop(){
+    function stop() {
 
         setIsRunning(false);
 
     };
 
-    function reset(){
+    function reset() {
 
         setElapsedTime(0);
         setIsRunning(false);
@@ -45,7 +45,7 @@ function Stopwatch(){
 
     };
 
-    function formatTime(){
+    function formatTime() {
 
         let hours = Math.floor(elapsedTime / (1000 * 60 * 60));
         let minutes = Math.floor((elapsedTime / (1000 * 60)) % 60);
@@ -55,15 +55,19 @@ function Stopwatch(){
         return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(3, '0')}`;
     };
 
-    return(
-    <div className="stopwatch">
-        <div className="display">{formatTime()}</div>
-        <div className="controls">
-            <button onClick={start} className="start-button">Start</button>
-            <button onClick={stop} className="stop-button">Stop</button>
-            <button onClick={reset} className="reset-button">Reset</button>
-        </div>
-    </div>)
+    return (
+        <>
+            <h1 className="titleBanner">REACT STOPWATCH</h1>
+            <div className="stopwatch">
+                <div className="display">{formatTime()}</div>
+                <div className="controls">
+                    <button onClick={start} className="start-button">Start</button>
+                    <button onClick={stop} className="stop-button">Stop</button>
+                    <button onClick={reset} className="reset-button">Reset</button>
+                </div>
+            </div>
+        </>
+    )
 };
 
 export default Stopwatch;
