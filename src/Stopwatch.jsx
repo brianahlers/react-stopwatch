@@ -10,24 +10,49 @@ function Stopwatch(){
     
     useEffect(() => {
 
+        if(isRunning){
+            intervalIDRef.current = setInterval(() => {
+                setElapsedTime(Date.now() - startTimeRef.current);
+            }, 10)
+        }
+
+        return () => {
+                
+                clearInterval(intervalIDRef.current);
+        }
+
     }, [isRunning]);
 
     function start(){
+
+        setIsRunning(true);
+        startTimeRef.current = Date.now() - elapsedTime;
+        console.log(startTimeRef.current);
 
     };
 
     function stop(){
 
+        setIsRunning(false);
+
     };
 
     function reset(){
+
+        setElapsedTime(0);
+        setIsRunning(false);
+
 
     };
 
     function formatTime(){
 
-        return `00:00:00`;
+        let hours = Math.floor(elapsedTime / (1000 * 60 * 60));
+        let minutes = Math.floor((elapsedTime / (1000 * 60)) % 60);
+        let seconds = Math.floor((elapsedTime / 1000) % 60);
+        let milliseconds = Math.floor(elapsedTime % 1000);
 
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(3, '0')}`;
     };
 
     return(
